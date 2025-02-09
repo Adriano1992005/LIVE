@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Controle</title>
+    <style>
+        body {
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            background-color: black;
+            color: white;
+        }
+
+        input, button {
+            font-size: 18px;
+            margin: 10px;
+            padding: 10px;
+            width: 80%;
+        }
+
+        .img-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            background-size: cover;
+            background-position: center;
+            margin: 10px auto;
+            border: 2px solid white;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Painel de Controle</h2>
+    <label>Vida:</label>
+    <input type="number" id="vidaInput" value="100" min="0" max="100"><br>
+
+    <label>Sanidade:</label>
+    <input type="number" id="sanidadeInput" value="100" min="0" max="100"><br>
+
+    <label>Imagem do Personagem:</label>
+    <select id="imagemInput" onchange="atualizarPreview()">
+        <option value="normal.jpg">Normal</option>
+        <option value="medo.jpg">Com Medo</option>
+        <option value="morrendo.jpg">Morrendo</option>
+    </select>
+
+    <div class="img-preview" id="imgPreview"></div>
+
+    <button onclick="enviarDados()">Atualizar Overlay</button>
+
+    <script>
+        function atualizarPreview() {
+            let imagem = document.getElementById("imagemInput").value;
+            document.getElementById("imgPreview").style.backgroundImage = `url(${imagem})`;
+        }
+
+        async function enviarDados() {
+            let dados = {
+                vida: document.getElementById("vidaInput").value,
+                sanidade: document.getElementById("sanidadeInput").value,
+                imagem: document.getElementById("imagemInput").value
+            };
+
+            try {
+                await fetch("https://SEU-SERVIDOR.com/atualizar.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(dados)
+                });
+
+                alert("Atualizado com sucesso!");
+            } catch (error) {
+                console.error("Erro ao enviar dados:", error);
+            }
+        }
+    </script>
+
+</body>
+</html>
