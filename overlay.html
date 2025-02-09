@@ -1,0 +1,30 @@
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    // Configuração do Firebase
+    const firebaseConfig = {
+        apiKey: "SUA-API-KEY",
+        authDomain: "SEU-PROJETO.firebaseapp.com",
+        databaseURL: "https://SEU-PROJETO-default-rtdb.firebaseio.com/",
+        projectId: "SEU-PROJETO",
+        storageBucket: "SEU-PROJETO.appspot.com",
+        messagingSenderId: "SENDER-ID",
+        appId: "APP-ID"
+    };
+
+    // Inicializa o Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    function atualizarOverlay(snapshot) {
+        const data = snapshot.val();
+        document.getElementById("vida").textContent = data.vida;
+        document.getElementById("sanidade").textContent = data.sanidade;
+        document.getElementById("playerImage").style.backgroundImage = `url(${data.imagem})`;
+    }
+
+    // Referência ao banco de dados e atualização em tempo real
+    const statusRef = ref(database, "jogador");
+    onValue(statusRef, atualizarOverlay);
+</script>
